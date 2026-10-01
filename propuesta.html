@@ -55,34 +55,35 @@
     <button class="btn" id="otra">Intentar ahora</button>
     <p id="ayuda" style="display:none">¿Tarda mucho? Escríbanos o llámenos al <strong>320 796 0025</strong>.</p>
   </div>
-  <a class="btn" id="ir" href="https://cartyx.tailfec08a.ts.net" style="display:none">Abrir</a>
   <small>CARTYX · Software a la medida</small>
 </main>
 <script>
-  var BASE = "https://cartyx.tailfec08a.ts.net";
+  var BASES = ["https://cartyx.tailfec08a.ts.net","https://shuttle-strengthening-ambient-listprice.trycloudflare.com"];
   var t = new URLSearchParams(location.search).get("t") || "";
-  var destino = /^[A-Za-z0-9_-]{16,64}$/.test(t) ? BASE + "/p/" + t : "";
+  var ruta = /^[A-Za-z0-9_-]{16,64}$/.test(t) ? "/p/" + t : null;
   var intentos = 0;
-  // Comprueba que CARTYX responda antes de entrar: si el equipo está apagado, el navegador no muestra un error feo
   function probar() {
     intentos++;
-    var control = "AbortController" in window ? new AbortController() : null;
-    var reloj = setTimeout(function () { if (control) control.abort(); }, 7000);
-    fetch(BASE + "/api/salud", { mode: "no-cors", cache: "no-store", signal: control ? control.signal : undefined })
-      .then(function () { clearTimeout(reloj); location.replace(destino); })
-      .catch(function () {
-        clearTimeout(reloj);
-        document.getElementById("espera").style.display = "block";
-        if (intentos >= 3) document.getElementById("ayuda").style.display = "block";
-        setTimeout(probar, 10000);
-      });
+    var listo = false, fallas = 0;
+    BASES.forEach(function (base) {
+      var control = "AbortController" in window ? new AbortController() : null;
+      var reloj = setTimeout(function () { if (control) control.abort(); }, 7000);
+      fetch(base + "/api/salud", { mode: "no-cors", cache: "no-store", signal: control ? control.signal : undefined })
+        .then(function () { clearTimeout(reloj); if (!listo) { listo = true; location.replace(base + ruta); } })
+        .catch(function () {
+          clearTimeout(reloj);
+          if (++fallas < BASES.length || listo) return;
+          document.getElementById("espera").style.display = "block";
+          if (intentos >= 3) document.getElementById("ayuda").style.display = "block";
+          setTimeout(probar, 10000);
+        });
+    });
   }
-  document.getElementById("ir").href = destino;
-  document.getElementById("otra").onclick = function () { location.replace(destino); };
-  if (!destino) { document.getElementById("titulo").textContent = "Este enlace no es válido"; }
-  else if (!("fetch" in window)) location.replace(destino);
+  document.getElementById("otra").onclick = function () { probar(); };
+  if (ruta === null) document.getElementById("titulo").textContent = "Este enlace no es válido";
+  else if (!("fetch" in window)) location.replace(BASES[0] + ruta);
   else probar();
 </script>
-<!-- Actualizado: 1/10/2026, 7:39:33 a. m. -->
+<!-- Actualizado: 1/10/2026, 7:52:20 a. m. -->
 </body>
 </html>
