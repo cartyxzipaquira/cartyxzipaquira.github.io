@@ -5,41 +5,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>CARTYX</title>
-<meta http-equiv="refresh" content="3; url=https://cartyx.tailfec08a.ts.net">
+<meta property="og:title" content="CARTYX">
+<meta property="og:description" content="Software a la medida para su empresa.">
+<meta property="og:image" content="https://cartyxzipaquira.github.io/vista.png">
+<link rel="icon" href="https://cartyxzipaquira.github.io/icono.png">
 <style>
-  :root { color-scheme: light; }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0c2533; color: #fff;
+  html, body { margin: 0; min-height: 100%; }
+  body { min-height: 100vh; display: grid; place-items: center; background: #0c2533; color: #fff; overflow: hidden;
          font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { text-align: center; padding: 24px; }
-  h1 { font-size: 28px; letter-spacing: .08em; margin: 18px 0 6px; }
-  h1 span { color: #5cc08f; }
-  p { color: #c6d4df; margin: 6px 0; }
-  .giro { width: 38px; height: 38px; margin: 0 auto; border: 4px solid rgba(255,255,255,.15);
-          border-top-color: #5cc08f; border-radius: 50%; animation: g 0.9s linear infinite; }
-  @keyframes g { to { transform: rotate(360deg); } }
-  a { display: inline-block; margin-top: 18px; padding: 10px 18px; border-radius: 10px; background: #1e6d4a;
-      color: #fff; text-decoration: none; font-weight: 600; }
-  small { display: block; margin-top: 22px; color: #6b8ba4; font-size: 12px; }
+  .fondo { position: fixed; inset: 0; pointer-events: none;
+           background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+           background-size: 44px 44px; animation: cuadricula 20s linear infinite; }
+  .orbe { position: fixed; border-radius: 50%; pointer-events: none; animation: orbita 14s ease-in-out infinite alternate; }
+  .o1 { width: 70vmax; height: 70vmax; left: -30vmax; top: -35vmax; background: radial-gradient(circle, rgba(46,138,96,.45), transparent 65%); }
+  .o2 { width: 60vmax; height: 60vmax; right: -25vmax; bottom: -30vmax; background: radial-gradient(circle, rgba(56,189,248,.25), transparent 65%); animation-delay: -7s; }
+  @keyframes cuadricula { to { background-position: 44px 44px; } }
+  @keyframes orbita { to { transform: translate(8%, 10%) scale(1.1); } }
+  main { position: relative; text-align: center; padding: 28px; max-width: 460px; }
+  img { height: 54px; }
+  .puntos { display: flex; gap: 8px; justify-content: center; margin: 30px 0 22px; }
+  .puntos i { width: 12px; height: 12px; border-radius: 3px; background: #7fc0a0; animation: salto 1.2s ease-in-out infinite; }
+  .puntos i:nth-child(2) { animation-delay: .15s; background: #a7f3d0; } .puntos i:nth-child(3) { animation-delay: .3s; background: #5eead4; }
+  .puntos i:nth-child(4) { animation-delay: .45s; background: #7dd3fc; }
+  @keyframes salto { 0%, 100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(-10px); opacity: 1; } }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  p { color: #c6d4df; margin: 6px 0; line-height: 1.5; }
+  #espera { display: none; }
+  .btn { display: inline-block; margin-top: 18px; padding: 11px 20px; border-radius: 12px; background: #2e8a60; color: #fff;
+         text-decoration: none; font-weight: 600; border: 0; font-size: 15px; cursor: pointer; }
+  small { display: block; margin-top: 24px; color: #6b8ba4; font-size: 12px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 </style>
 </head>
 <body>
+<div class="fondo"></div><div class="orbe o1"></div><div class="orbe o2"></div>
 <main>
-  <div class="giro" aria-hidden="true"></div>
-  <h1>CARTY<span>X</span></h1>
-  <p>Datos en terreno, decisiones inteligentes.</p>
-  <p>Abriendo el sistema…</p>
-  <a id="ir" href="https://cartyx.tailfec08a.ts.net">Entrar a CARTYX</a>
-  <small>Actualizado: 2026-09-25 21:17</small>
+  <img src="https://cartyxzipaquira.github.io/logo.png" alt="CARTYX">
+  <div class="puntos" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <h1 id="titulo">Abriendo CARTYX…</h1>
+  <div id="espera">
+    <p>El sistema se está iniciando.</p>
+    <p>Se abrirá sola en cuanto esté lista.</p>
+    <button class="btn" id="otra">Intentar ahora</button>
+    <p id="ayuda" style="display:none">¿Tarda mucho? Escríbanos o llámenos al <strong>320 796 0025</strong>.</p>
+  </div>
+  <a class="btn" id="ir" href="https://cartyx.tailfec08a.ts.net" style="display:none">Abrir</a>
+  <small>CARTYX · Software a la medida</small>
 </main>
 <script>
-  // Conserva la ruta pedida (p. ej. cartyxzipaquira.github.io/tareas → …/tareas)
-  var base = "https://cartyx.tailfec08a.ts.net";
+  var BASE = "https://cartyx.tailfec08a.ts.net";
   var ruta = location.pathname + location.search + location.hash;
   if (ruta === "/" || ruta === "/index.html") ruta = "";
-  var destino = base + ruta;
+  var destino = BASE + ruta;
+  var intentos = 0;
+  // Comprueba que CARTYX responda antes de entrar: si el equipo está apagado, el navegador no muestra un error feo
+  function probar() {
+    intentos++;
+    var control = "AbortController" in window ? new AbortController() : null;
+    var reloj = setTimeout(function () { if (control) control.abort(); }, 7000);
+    fetch(BASE + "/api/salud", { mode: "no-cors", cache: "no-store", signal: control ? control.signal : undefined })
+      .then(function () { clearTimeout(reloj); location.replace(destino); })
+      .catch(function () {
+        clearTimeout(reloj);
+        document.getElementById("espera").style.display = "block";
+        if (intentos >= 3) document.getElementById("ayuda").style.display = "block";
+        setTimeout(probar, 10000);
+      });
+  }
   document.getElementById("ir").href = destino;
-  location.replace(destino);
+  document.getElementById("otra").onclick = function () { location.replace(destino); };
+  if (!destino) { document.getElementById("titulo").textContent = "Este enlace no es válido"; }
+  else if (!("fetch" in window)) location.replace(destino);
+  else probar();
 </script>
+<!-- Actualizado: 1/10/2026, 7:39:33 a. m. -->
 </body>
 </html>
